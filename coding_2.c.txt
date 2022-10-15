@@ -33,6 +33,59 @@ char *getLine(String *s) {
 
 int solution(char *S, char *F) {
     /*Complete this function*/
+    
+    int array[26], operations = 0, i; // Create Array to Represent Lowercase Letters ('a' to 'z')
+
+    for (i = 0; i < 26; i++) {
+        array[i] = 0; // Initialize Array to 0
+    }
+
+    i = 0;
+    while (F[i] != '\0') { // Go Through Characters in String F
+        array[F[i] - 97] = 1; // Set Array to 1 for Each Character Contained in String F
+        i++;
+    }
+
+    i = 0;
+    while (S[i] != '\0') { // Go Through Characters in String S
+        int current = S[i] - 97, counter1 = 0, counter2 = 0, j;  // Create Int Variable to Retrieve Character in String S
+
+        // Check Characters (Left to Right)
+        j = current;
+        do {
+            if (array[j] == 1) { // If Characters Match...
+                break;
+            }
+            counter1++;
+            j++;
+            if (j > 25) { // If Reaching to Last Index...
+                j = 0; // Reset to First Index
+            }
+        } while (j != current);
+
+        // Check Characters (Right to Left)
+        j = current;
+        do {
+            if (array[j] == 1) { // If Characters Match...
+                break;
+            }
+            counter2++;
+            j--;
+            if (j < 0) { // If Reaching to First Index...
+                j = 25; // Reset to Last Index
+            }
+        } while (j != current);
+
+        // Retrieve the Smallest Number of Operations
+        if (counter1 < counter2) {
+            operations += counter1;
+        } else {
+            operations += counter2;
+        }
+        i++;
+    }
+    return operations;
+    
 }
 
 int main(int argc, char *argv[]) {
